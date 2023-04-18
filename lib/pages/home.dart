@@ -1,4 +1,3 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/widgets.dart';
@@ -11,12 +10,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  late PageController _pageController;
+  int activePage = 0;
   final List<String> imgList = [
     "images/star.jpg",
     "images/star.jpg",
     "images/star.jpg",
     "images/star.jpg",
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(viewportFraction: 0.8);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,21 +128,31 @@ class _HomeState extends State<Home> {
                   ],
                 ),
               ),
-              CarouselSlider(
-                options: CarouselOptions(height: 400.0),
-                items: imgList
-                    .map(
-                      (item) => Container(
-                        child: Center(
-                          child: Image.asset(
-                            item,
-                            fit: BoxFit.cover,
-                            width: 1000,
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    child: PageView.builder(
+                      itemCount: imgList.length,
+                      pageSnapping: true,
+                      controller: _pageController,
+                      onPageChanged: (page) {
+                        setState(() {
+                          activePage = page;
+                        });
+                      },
+                      itemBuilder: (context, index) {
+                        bool active = index == activePage;
+                        return slider(imgList, index, active);
+                      },
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: indicators(imgList.length, activePage),
+                  ),
+                ],
               ),
             ],
           ),

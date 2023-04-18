@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//Circular story avatars
 class BuildAvatarWidget extends StatelessWidget {
   final ImageProvider<Object> backgroundImage;
   final String title;
@@ -35,6 +36,7 @@ class BuildAvatarWidget extends StatelessWidget {
   }
 }
 
+//Divider to center text
 class OrDivider extends StatelessWidget {
   final String text;
   const OrDivider({Key? key, required this.text}) : super(key: key);
@@ -75,4 +77,38 @@ class OrDivider extends StatelessWidget {
       ),
     );
   }
+}
+
+//Slider Page Indicators
+List<Widget> indicators(imageLength, currentIndex) {
+  return List<Widget>.generate(imageLength, (index) {
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.ease,
+      margin: const EdgeInsets.all(3.0),
+      width: currentIndex == index ? 10 : 7,
+      height: currentIndex == index ? 10 : 7,
+      decoration: BoxDecoration(
+        color: currentIndex == index ? Colors.black : Colors.black26,
+        shape: BoxShape.circle,
+      ),
+    );
+  });
+}
+
+//Carousel Widget
+AnimatedContainer slider(images, index, active) {
+  double margin = active ? 10 : 20;
+  return AnimatedContainer(
+    duration: const Duration(milliseconds: 500),
+    curve: Curves.easeInOutCubic,
+    margin: EdgeInsets.all(margin),
+    decoration: BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage(
+          images[index],
+        ),
+      ),
+    ),
+  );
 }
